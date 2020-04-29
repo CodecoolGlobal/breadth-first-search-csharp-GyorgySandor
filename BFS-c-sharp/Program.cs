@@ -17,6 +17,14 @@ namespace BFS_c_sharp
             }
 
             Console.WriteLine("Done");
+
+            UserNode user1 = users[1];
+            UserNode user2 = users[2];
+            int distance = UserNode.Distance(user1, user2);
+
+            Console.WriteLine($"Distance between: {user1.FirstName} {user1.LastName} " +
+                                           $"and  {user2.FirstName} {user2.LastName} is {distance}");
+
             Console.ReadKey();
         }
     }
