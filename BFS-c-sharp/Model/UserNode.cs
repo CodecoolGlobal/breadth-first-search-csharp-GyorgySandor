@@ -67,5 +67,56 @@ namespace BFS_c_sharp.Model
             }
             return distance;
         }
+
+        public static void friendOfFriends(UserNode startingUser, int distance)
+        {
+            Queue<UserNode> nextToVisit = new Queue<UserNode>();
+            Dictionary<UserNode, int> visited = new Dictionary<UserNode, int>();
+            nextToVisit.Enqueue(startingUser);
+            
+            visited.Add(startingUser, 0);
+            bool distanceReached = false;
+            List<UserNode> friendsList = new List<UserNode>();
+
+            while (!distanceReached)
+            {
+                UserNode currentUser = nextToVisit.Dequeue();
+
+                int lastDist;
+                visited.TryGetValue(currentUser, out lastDist);
+                if (lastDist + 1 == distance) { distanceReached = true; }
+
+
+                foreach (UserNode friend in currentUser.Friends)
+                {
+                    if (!visited.ContainsKey(friend))
+                    {
+                        int dist;
+                        visited.TryGetValue(currentUser, out dist);
+                        Console.WriteLine(dist);
+                        visited.Add(friend, dist + 1);
+                        nextToVisit.Enqueue(friend);
+                        
+                    }
+
+                }
+
+                if (distanceReached)
+                {
+                    foreach (KeyValuePair<UserNode, int> entry in visited) {
+                        if (entry.Value == distance)
+                        {
+                            friendsList.Add(entry.Key);
+                        }
+                    }
+                }
+
+            }
+            Console.WriteLine($"{startingUser.FirstName} {startingUser.LastName} has {friendsList.Count} friends in" +
+                              $" {distance} distance: ");
+            foreach (UserNode friend in friendsList){
+                Console.WriteLine($"{friend.FirstName} {friend.LastName}");
+            }
+        }
     }
 }
